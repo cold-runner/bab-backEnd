@@ -3,8 +3,8 @@
  */
 
 const config = {
-  appName: 'Gin-Vue-Admin',
-  appLogo: 'https://www.gin-vue-admin.com/img/logo.png',
+  appName: 'UniStudentsLiving',
+  appLogo: 'https://bab-static-1303875858.cos.ap-hongkong.myqcloud.com/logo.png',
   showViteLogo: true
 }
 

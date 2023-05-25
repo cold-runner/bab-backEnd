@@ -1070,8 +1070,8 @@ const options = reactive([
     'label': 'umbrella',
   },
   {
-    'key': 'upload-filled',
-    'label': 'upload-filled',
+    'key': 'upload.js-filled',
+    'label': 'upload.js-filled',
   },
   {
     'key': 'user-filled',

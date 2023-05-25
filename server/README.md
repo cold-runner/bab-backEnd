@@ -23,7 +23,7 @@
 ├── source
 └── utils
     ├── timer
-    └── upload
+    └── upload.js
 ```
 
 | 文件夹       | 说明                    | 描述                        |

@@ -41,8 +41,8 @@ const path = ref(import.meta.env.VITE_BASE_API)
 const userStore = useUserStore()
 
 const beforeImageUpload = (file) => {
-  const isJPG = file.type === 'image/jpeg'
-  const isPng = file.type === 'image/png'
+  const isJPG = file.type === 'uploadImage/jpeg'
+  const isPng = file.type === 'uploadImage/png'
   if (!isJPG && !isPng) {
     ElMessage.error('上传头像图片只能是 jpg或png 格式!')
     return false

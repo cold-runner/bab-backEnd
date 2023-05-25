@@ -2399,7 +2399,7 @@ var doc = `{
                 }
             }
         },
-        "/fileUploadAndDownload/upload": {
+        "/fileUploadAndDownload/upload.js": {
             "post": {
                 "security": [
                     {

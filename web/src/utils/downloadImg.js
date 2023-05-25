@@ -7,7 +7,7 @@ export const downloadImage = (imgsrc, name) => { // 下载图片地址和图片�
     canvas.height = image.height
     var context = canvas.getContext('2d')
     context.drawImage(image, 0, 0, image.width, image.height)
-    var url = canvas.toDataURL('image/png') // 得到图片的base64编码数据
+    var url = canvas.toDataURL('uploadImage/png') // 得到图片的base64编码数据
 
     var a = document.createElement('a') // 生成一个a元素
     var event = new MouseEvent('click') // 创建一个单击事件

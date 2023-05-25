@@ -17,7 +17,7 @@ import (
 
 type TencentCOS struct{}
 
-// UploadFile upload file to COS
+// UploadFile upload.js file to COS
 func (*TencentCOS) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	client := NewClient()
 	f, openError := file.Open()
@@ -26,11 +26,14 @@ func (*TencentCOS) UploadFile(file *multipart.FileHeader) (string, string, error
 		return "", "", errors.New("function file.Open() Filed, err:" + openError.Error())
 	}
 	defer f.Close() // 创建文件 defer 关闭
-	fileKey := fmt.Sprintf("%d%s", time.Now().Unix(), file.Filename)
+	fileKey := fmt.Sprintf("%d%s", time.Now().UnixNano(), file.Filename)
 
 	_, err := client.Object.Put(context.Background(), global.GVA_CONFIG.TencentCOS.PathPrefix+"/"+fileKey, f, nil)
 	if err != nil {
 		panic(err)
+	}
+	if global.GVA_CONFIG.TencentCOS.PathPrefix == "" {
+		return global.GVA_CONFIG.TencentCOS.BaseURL + "/" + fileKey, fileKey, nil
 	}
 	return global.GVA_CONFIG.TencentCOS.BaseURL + "/" + global.GVA_CONFIG.TencentCOS.PathPrefix + "/" + fileKey, fileKey, nil
 }
