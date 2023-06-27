@@ -41,7 +41,7 @@ func (cityInfoService *BabCityService) DeleteBabCity(cityInfo babCity.BabCity) (
 		if err := tx.Model(&babCity.BabCity{}).Where("id = ?", cityInfo.ID).Update("deleted_by", cityInfo.DeletedBy).Error; err != nil {
 			return err
 		}
-		if err = tx.Delete(&cityInfo).Error; err != nil {
+		if err = tx.Unscoped().Delete(&cityInfo).Error; err != nil {
 			return err
 		}
 		return nil
@@ -66,7 +66,7 @@ func (cityInfoService *BabCityService) DeleteBabCityByIds(ids request.IdsReq, de
 		if err := tx.Model(&babCity.BabCity{}).Where("id in ?", ids.Ids).Update("deleted_by", deleted_by).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("id in ?", ids.Ids).Delete(&babCity.BabCity{}).Error; err != nil {
+		if err := tx.Where("id in ?", ids.Ids).Unscoped().Delete(&babCity.BabCity{}).Error; err != nil {
 			return err
 		}
 		return nil

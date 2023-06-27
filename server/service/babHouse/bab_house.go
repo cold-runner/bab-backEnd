@@ -42,7 +42,7 @@ func (houseInfoService *BabHouseService) DeleteBabHouse(houseInfo babHouse.BabHo
 		if err := tx.Model(&babHouse.BabHouse{}).Where("id = ?", houseInfo.ID).Update("deleted_by", houseInfo.DeletedBy).Error; err != nil {
 			return err
 		}
-		if err = tx.Delete(&houseInfo).Error; err != nil {
+		if err = tx.Unscoped().Delete(&houseInfo).Error; err != nil {
 			return err
 		}
 		return nil
@@ -67,7 +67,7 @@ func (houseInfoService *BabHouseService) DeleteBabHouseByIds(ids request.IdsReq,
 		if err := tx.Model(&babHouse.BabHouse{}).Where("id in ?", ids.Ids).Update("deleted_by", deleted_by).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("id in ?", ids.Ids).Delete(&babHouse.BabHouse{}).Error; err != nil {
+		if err := tx.Unscoped().Where("id in ?", ids.Ids).Delete(&babHouse.BabHouse{}).Error; err != nil {
 			return err
 		}
 		return nil

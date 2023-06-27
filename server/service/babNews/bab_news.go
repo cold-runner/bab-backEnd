@@ -33,7 +33,7 @@ func (newsInfoService *BabNewsService) DeleteBabNews(newsInfo babNews.BabNews) (
 		if err := tx.Model(&babNews.BabNews{}).Where("id = ?", newsInfo.ID).Update("deleted_by", newsInfo.DeletedBy).Error; err != nil {
 			return err
 		}
-		if err = tx.Delete(&newsInfo).Error; err != nil {
+		if err = tx.Unscoped().Delete(&newsInfo).Error; err != nil {
 			return err
 		}
 		return nil
@@ -59,7 +59,7 @@ func (newsInfoService *BabNewsService) DeleteBabNewsByIds(ids request.IdsReq, de
 		if err := tx.Model(&babNews.BabNews{}).Where("id in ?", ids.Ids).Update("deleted_by", deleted_by).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("id in ?", ids.Ids).Delete(&babNews.BabNews{}).Error; err != nil {
+		if err := tx.Where("id in ?", ids.Ids).Unscoped().Delete(&babNews.BabNews{}).Error; err != nil {
 			return err
 		}
 		return nil

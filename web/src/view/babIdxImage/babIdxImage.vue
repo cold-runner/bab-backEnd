@@ -67,7 +67,6 @@
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :auto-upload="false"
-            :limit="1"
           >
             <el-icon><Plus /></el-icon>
           </el-upload>
@@ -283,9 +282,16 @@ const updateBabIdxImageFunc = async(row) => {
     formData.value.DeletedBy = resp.DeletedBy
     formData.value.ID = resp.ID
     formData.value.UpdatedAt = resp.UpdatedAt
-    formData.value.homePage.push(resp.Hp)
-    formData.value.enquiry.push(resp.Enq)
-    formData.value.news.push(resp.Ne)
+    for (let i = 0; i < resp.Hp.length; i++) {
+      formData.value.homePage.push(resp.Hp[i])
+    }
+    for (let i = 0; i < resp.Enq.length; i++) {
+      formData.value.enquiry.push(resp.Enq[i])
+    }
+    for (let i = 0; i < resp.Ne.length; i++) {
+      formData.value.news.push(resp.Ne[i])
+    }
+
     dialogFormVisible.value = true
   }
 }
@@ -331,23 +337,33 @@ const enterDialog = async() => {
        const multiForm = new FormData()
        const blob = new Blob(['nil blob'], { type: 'text/plain' })
 
-       const homePageImg = formData.value.homePage[0]
-       if (homePageImg.raw === undefined) {
-         multiForm.append('homePage', blob, homePageImg.name)
-       } else {
-         multiForm.append('homePage', homePageImg.raw, homePageImg.name)
+       for (let i = 0; i < formData.value.homePage.length; i++) {
+         const file = formData.value.homePage[i]
+         console.log(file)
+         if (file.raw !== undefined) {
+           multiForm.append('homePage[]', file.raw, file.name)
+           console.log(multiForm)
+         } else {
+           multiForm.append('homePage[]', blob, file.name)
+         }
        }
-       const enquiryImg = formData.value.enquiry[0]
-       if (enquiryImg.raw === undefined) {
-         multiForm.append('enquiry', blob, enquiryImg.name)
-       } else {
-         multiForm.append('enquiry', enquiryImg.raw, enquiryImg.name)
+
+       for (let i = 0; i < formData.value.enquiry.length; i++) {
+         const file = formData.value.enquiry[i]
+         if (file.raw !== undefined) {
+           multiForm.append('enquiry[]', file.raw, file.name) }
+         else {
+           multiForm.append('enquiry[]', blob, file.name)
+         }
        }
-       const newsImg = formData.value.news[0]
-       if (newsImg.raw === undefined) {
-         multiForm.append('news', blob, newsImg.name)
-       } else {
-         multiForm.append('news', newsImg.raw, newsImg.name)
+
+       for (let i = 0; i < formData.value.news.length; i++) {
+         const file = formData.value.news[i]
+         if (file.raw !== undefined) {
+           multiForm.append('news[]', file.raw, file.name) }
+         else {
+           multiForm.append('news[]', blob, file.name)
+         }
        }
 
        switch (type.value) {
@@ -382,6 +398,7 @@ const handlePictureCardPreview = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
 }
+
 
 </script>
 

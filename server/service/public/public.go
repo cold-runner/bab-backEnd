@@ -77,24 +77,30 @@ func (p *PublicService) AboutUs() (res babAboutUs.BabAboutUs, err error) {
 	return
 }
 
-func (p *PublicService) HomePageUrl() (url string, err error) {
+func (p *PublicService) HomePageUrl() (urls []string, err error) {
 	res := babIdxImage.BabIdxImage{}
 	err = global.GVA_DB.First(&res).Error
-	url = res.Hp.URL
+	for i := range res.Hp {
+		urls = append(urls, res.Hp[i].URL)
+	}
 	return
 }
 
-func (p *PublicService) EnquiryImageUrl() (url string, err error) {
+func (p *PublicService) EnquiryImageUrl() (urls []string, err error) {
 	res := babIdxImage.BabIdxImage{}
 	err = global.GVA_DB.First(&res).Error
-	url = res.Enq.URL
+	for i := range res.Enq {
+		urls = append(urls, res.Enq[i].URL)
+	}
 	return
 }
 
-func (p *PublicService) NewsUrl() (url string, err error) {
+func (p *PublicService) NewsUrl() (urls []string, err error) {
 	res := babIdxImage.BabIdxImage{}
 	err = global.GVA_DB.First(&res).Error
-	url = res.Ne.URL
+	for i := range res.Ne {
+		urls = append(urls, res.Ne[i].URL)
+	}
 	return
 }
 

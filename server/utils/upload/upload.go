@@ -61,8 +61,14 @@ func ProcessUpdateImages(old uploadImage.Images, newer []*multipart.FileHeader) 
 	for k := range oldImages {
 		oss.DeleteFile(k)
 	}
+
+	if len(finalImages) == 0 {
+		finalImages = append(finalImages, uploadImage.Image{})
+	}
+
 	return
 }
+
 func ProcessUpdateImage(old *uploadImage.Image, newer *multipart.FileHeader) uploadImage.Image {
 	oss := NewOss()
 	if old.Name == newer.Filename {

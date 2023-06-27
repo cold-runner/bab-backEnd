@@ -25,7 +25,7 @@ func (enquiryInfoService *BabEnquiryService) DeleteBabEnquiry(enquiryInfo babEnq
 		if err := tx.Model(&babEnquiry.BabEnquiry{}).Where("id = ?", enquiryInfo.ID).Update("deleted_by", enquiryInfo.DeletedBy).Error; err != nil {
 			return err
 		}
-		if err = tx.Delete(&enquiryInfo).Error; err != nil {
+		if err = tx.Unscoped().Delete(&enquiryInfo).Error; err != nil {
 			return err
 		}
 		return nil
@@ -40,7 +40,7 @@ func (enquiryInfoService *BabEnquiryService) DeleteBabEnquiryByIds(ids request.I
 		if err := tx.Model(&babEnquiry.BabEnquiry{}).Where("id in ?", ids.Ids).Update("deleted_by", deleted_by).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("id in ?", ids.Ids).Delete(&babEnquiry.BabEnquiry{}).Error; err != nil {
+		if err := tx.Where("id in ?", ids.Ids).Unscoped().Delete(&babEnquiry.BabEnquiry{}).Error; err != nil {
 			return err
 		}
 		return nil

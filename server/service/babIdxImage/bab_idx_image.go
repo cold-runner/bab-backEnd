@@ -20,14 +20,14 @@ func (imgService *BabIdxImageService) CreateBabIdxImage(img *babIdxImage.BabIdxI
 // DeleteBabIdxImage 删除BabIdxImage记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (imgService *BabIdxImageService) DeleteBabIdxImage(img babIdxImage.BabIdxImage) (err error) {
-	err = global.GVA_DB.Delete(&img).Error
+	err = global.GVA_DB.Unscoped().Delete(&img).Error
 	return err
 }
 
 // DeleteBabIdxImageByIds 批量删除BabIdxImage记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (imgService *BabIdxImageService) DeleteBabIdxImageByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]babIdxImage.BabIdxImage{}, "id in ?", ids.Ids).Error
+	err = global.GVA_DB.Unscoped().Delete(&[]babIdxImage.BabIdxImage{}, "id in ?", ids.Ids).Error
 	return err
 }
 

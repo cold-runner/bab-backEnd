@@ -20,14 +20,14 @@ func (abusService *BabAboutUsService) CreateBabAboutUs(abus *babAboutUs.BabAbout
 // DeleteBabAboutUs 删除BabAboutUs记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (abusService *BabAboutUsService) DeleteBabAboutUs(abus babAboutUs.BabAboutUs) (err error) {
-	err = global.GVA_DB.Delete(&abus).Error
+	err = global.GVA_DB.Unscoped().Delete(&abus).Error
 	return err
 }
 
 // DeleteBabAboutUsByIds 批量删除BabAboutUs记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (abusService *BabAboutUsService) DeleteBabAboutUsByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]babAboutUs.BabAboutUs{}, "id in ?", ids.Ids).Error
+	err = global.GVA_DB.Unscoped().Delete(&[]babAboutUs.BabAboutUs{}, "id in ?", ids.Ids).Error
 	return err
 }
 

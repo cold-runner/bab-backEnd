@@ -25,7 +25,7 @@ func (companyInfoService *BabCompanyService) DeleteBabCompany(companyInfo babCom
 		if err := tx.Model(&babCompany.BabCompany{}).Where("id = ?", companyInfo.ID).Update("deleted_by", companyInfo.DeletedBy).Error; err != nil {
 			return err
 		}
-		if err = tx.Delete(&companyInfo).Error; err != nil {
+		if err = tx.Unscoped().Delete(&companyInfo).Error; err != nil {
 			return err
 		}
 		return nil
@@ -40,7 +40,7 @@ func (companyInfoService *BabCompanyService) DeleteBabCompanyByIds(ids request.I
 		if err := tx.Model(&babCompany.BabCompany{}).Where("id in ?", ids.Ids).Update("deleted_by", deleted_by).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("id in ?", ids.Ids).Delete(&babCompany.BabCompany{}).Error; err != nil {
+		if err := tx.Where("id in ?", ids.Ids).Unscoped().Delete(&babCompany.BabCompany{}).Error; err != nil {
 			return err
 		}
 		return nil

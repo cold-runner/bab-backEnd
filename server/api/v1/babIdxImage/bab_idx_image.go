@@ -47,15 +47,32 @@ func (imgApi *BabIdxImageApi) CreateBabIdxImage(c *gin.Context) {
 		return
 	}
 	// 图片处理
+	for i := range img.HomePage {
+		url, name, err := privateService.Upload(img.HomePage[i])
+		if err != nil {
+			response.FailWithDetailed(err, "文件"+name+"上传失败！", c)
+			break
+		}
+		img.Hp = append(img.Hp, uploadImage.Image{name, url})
+	}
 
-	hpUrl, hpName, _ := privateService.Upload(img.HomePage)
-	NewsUrl, NewsName, _ := privateService.Upload(img.News)
-	enqUrl, enqName, _ := privateService.Upload(img.Enquiry)
+	for i := range img.Enquiry {
+		url, name, err := privateService.Upload(img.Enquiry[i])
+		if err != nil {
+			response.FailWithDetailed(err, "文件"+name+"上传失败！", c)
+			break
+		}
+		img.Enq = append(img.Enq, uploadImage.Image{name, url})
+	}
 
-	img.Enq = uploadImage.Image{enqName, enqUrl}
-	img.Hp = uploadImage.Image{hpName, hpUrl}
-	img.Ne = uploadImage.Image{NewsName, NewsUrl}
-
+	for i := range img.News {
+		url, name, err := privateService.Upload(img.News[i])
+		if err != nil {
+			response.FailWithDetailed(err, "文件"+name+"上传失败！", c)
+			break
+		}
+		img.Ne = append(img.Ne, uploadImage.Image{name, url})
+	}
 	if err := imgService.CreateBabIdxImage(&img); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
@@ -138,10 +155,10 @@ func (imgApi *BabIdxImageApi) UpdateBabIdxImage(c *gin.Context) {
 		return
 	}
 	// 图片处理
-	oldNewsInfo, err := imgService.GetBabIdxImage(img.ID)
-	img.Hp = upload.ProcessUpdateImage(&(oldNewsInfo.Hp), img.HomePage)
-	img.Ne = upload.ProcessUpdateImage(&(oldNewsInfo.Ne), img.News)
-	img.Enq = upload.ProcessUpdateImage(&(oldNewsInfo.Enq), img.Enquiry)
+	oldImg, err := imgService.GetBabIdxImage(img.ID)
+	img.Hp = upload.ProcessUpdateImages(oldImg.Hp, img.HomePage)
+	img.Enq = upload.ProcessUpdateImages(oldImg.Enq, img.Enquiry)
+	img.Ne = upload.ProcessUpdateImages(oldImg.Ne, img.News)
 
 	if err := imgService.UpdateBabIdxImage(img); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))

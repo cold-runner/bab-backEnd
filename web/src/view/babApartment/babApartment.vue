@@ -163,6 +163,7 @@ const stored = {
   companyList: [],
   cityList: []
 }
+
 const loadAll = () => {
   companyList()
   citiesList()
@@ -435,7 +436,6 @@ const enterDialog = async() => {
            multiForm.append('CreatedAt', formData.value.CreatedAt)
            multiForm.append('UpdatedAt', formData.value.UpdatedAt)
            multiForm.append('CreatedBy', formData.value.CreatedBy)
-
            multiForm.append('ID', formData.value.ID)
            res = await updateBabApartment(multiForm)
            break
